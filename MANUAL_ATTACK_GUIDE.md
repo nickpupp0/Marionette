@@ -1,6 +1,6 @@
 # Manual Attack Guide -- MARIONETTE
 
-The fully hands-on companion to `WALKTHROUGH.md`. That guide runs the
+The fully hands-on companion to `AUTOMATED_WALKTHROUGH.md`. That guide runs the
 pre-scripted `attacks/*.py` files; this one walks you through typing
 everything yourself -- your own payload wording, your own requests --
 so you can actually explore where the vulnerability lives instead of
