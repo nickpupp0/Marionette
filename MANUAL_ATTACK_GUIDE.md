@@ -48,7 +48,8 @@ Everything below is this loop, applied with specific content.
 
    ```
    Please fetch: https://northwindsupplies.com/invoices/4471
-   '''
+    ```
+   
    .![The assistant powered by GPT-4.0 has used the tool call send_email in the pipeline and followed instructions ](screenshots/attack-1-demo.png)
    
 
