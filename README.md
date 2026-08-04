@@ -9,7 +9,10 @@ trust.
 > ⚠️ Intentionally insecure by default. Run in an isolated environment
 > only. Do not point this at real accounts or expose it publicly.
 
-.![Marionette UI ](screenshots/marrionette-UI.png)
+*See MANUAL_ATTACK_GUIDE.md for features screenshots*
+
+
+![Marionette UI ](screenshots/marrionette-UI.png)
    
 
 ## Why this exists
