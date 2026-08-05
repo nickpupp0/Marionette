@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MARIONETTE :: Agent Console</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">MARIONETTE</span>
+    <span class="brand-sub">pulling an agent's strings: a tool-calling security lab</span>
+  </div>
+  <div class="controls">
+    <select id="modelSelect">
+      <option value="sonnet">Claude Sonnet</option>
+      <option value="haiku">Claude Haiku</option>
+      <option value="gpt-4o">GPT-4o</option>
+      <option value="gpt-4o-mini">GPT-4o mini</option>
+      <option value="ollama">Ollama (local)</option>
+    </select>
+    <div class="defense-toggle">
+      <span id="defenseLabel" class="mode-label mode-off">VULNERABLE</span>
+      <label class="switch">
+        <input type="checkbox" id="defenseSwitch">
+        <span class="slider"></span>
+      </label>
+      <span class="mode-caption">defense_mode</span>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: chat with the agent -->
+  <section class="panel chat-panel">
+    <div class="panel-header"><h2>Agent Console</h2></div>
+    <div id="chatLog" class="chat-log"></div>
+    <form id="chatForm" class="chat-input-row">
+      <input id="chatInput" type="text" placeholder="Ask the agent to do something..." autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- MIDDLE: live tool-call log -->
+  <section class="panel log-panel">
+    <div class="panel-header"><h2>Live tool-call log</h2></div>
+    <div id="eventLog" class="event-log"></div>
+  </section>
+
+  <!-- RIGHT: admin / attacker controls -->
+  <section class="panel admin-panel">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="plant">Plant</button>
+      <button class="tab-btn" data-tab="attacks">Attacks</button>
+      <button class="tab-btn" data-tab="pending">Pending</button>
+      <button class="tab-btn" data-tab="env">Environment</button>
+    </div>
+
+    <div class="tab-content" id="tab-plant">
+      <p class="hint">Simulates an attacker planting content the agent will later read via a tool call.</p>
+
+      <p class="section-label">Plant an email</p>
+      <input id="emailSender" type="text" placeholder="Sender address">
+      <input id="emailSubject" type="text" placeholder="Subject">
+      <textarea id="emailBody" rows="4" placeholder="Body..."></textarea>
+      <button id="plantEmailBtn">Plant email</button>
+
+      <p class="section-label">Plant / overwrite a webpage</p>
+      <input id="webUrl" type="text" placeholder="URL">
+      <textarea id="webContent" rows="4" placeholder="Page content..."></textarea>
+      <button id="plantWebBtn">Plant webpage</button>
+
+      <p class="section-label">Plant a calendar event</p>
+      <input id="eventDate" type="text" placeholder="Date (e.g. Today, Thursday)">
+      <input id="eventTitle" type="text" placeholder="Title">
+      <textarea id="eventDescription" rows="4" placeholder="Description..."></textarea>
+      <input id="eventAttendees" type="text" placeholder="Attendees (comma-separated, optional)">
+      <button id="plantEventBtn">Plant calendar event</button>
+    </div>
+
+    <div class="tab-content hidden" id="tab-attacks">
+      <p class="hint">Runs the corresponding script in <code>attacks/</code> against this instance.</p>
+      <button class="attack-btn" data-attack="attack1">Attack 1 — Tool Hijack via Fetched Page</button>
+      <button class="attack-btn" data-attack="attack2">Attack 2 — Cross-Tool Laundering</button>
+      <button class="attack-btn" data-attack="attack3">Attack 3 — Persistent Context Poisoning</button>
+      <button class="attack-btn" data-attack="attack4">Attack 4 — Calendar Invite Injection</button>
+      <button id="resetBtn" class="reset-btn">Reset environment</button>
+    </div>
+
+    <div class="tab-content hidden" id="tab-pending">
+      <p class="hint">Dangerous tool calls staged here when defense_mode is on. Nothing executes until you approve.</p>
+      <div id="pendingList"></div>
+    </div>
+
+    <div class="tab-content hidden" id="tab-env">
+      <div class="env-tabs">
+        <button class="env-tab-btn active" data-env="inbox">Inbox</button>
+        <button class="env-tab-btn" data-env="web">Web</button>
+        <button class="env-tab-btn" data-env="calendar">Calendar</button>
+        <button class="env-tab-btn" data-env="sent">Sent</button>
+      </div>
+      <button id="refreshEnvBtn">Refresh</button>
+      <div id="envList" class="kb-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
